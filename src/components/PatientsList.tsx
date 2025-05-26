@@ -1,6 +1,6 @@
 const PatientsList = () => {
-    return (
-        <div>PatientsList</div>
-    )
+  return (
+    <div>PatientsList</div>
+  )
 }
 export default PatientsList
