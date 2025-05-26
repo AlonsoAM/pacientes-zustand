@@ -1,54 +1,57 @@
-# React + TypeScript + Vite
+# Seguimiento de Pacientes Veterinaria
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web diseñada para facilitar el seguimiento y la gestión de pacientes en una clínica veterinaria. Permite registrar nuevos pacientes, ver su información y administrar sus datos de manera eficiente.
 
-Currently, two official plugins are available:
+## Tecnologías Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+La aplicación está construida con un stack moderno de tecnologías de desarrollo web:
 
-## Expanding the ESLint configuration
+-   ![React](https://img.shields.io/badge/React-19.1.0-%2361DAFB?style=for-the-badge&logo=react&logoColor=black)
+-   ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
+-   ![Vite](https://img.shields.io/badge/Vite-6.3.5-%23646CFF?style=for-the-badge&logo=vite&logoColor=white)
+-   ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.7-%2306B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+-   ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-7.56.4-%23EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
+-   ![Zustand](https://img.shields.io/badge/Zustand-brightgreen?style=for-the-badge&logo=zustand&logoColor=white) <!-- No encontré un logo oficial específico para Zustand en shields.io, usando un color genérico -->
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Características Principales
 
-```js
+-   **Registro de Pacientes**: Formulario para ingresar la información de nuevos pacientes.
+-   **Listado de Pacientes**: Visualización de los pacientes registrados.
+-   **Componente de Errores**: Muestra mensajes de error de validación en los formularios.
+-   **Interfaz Responsiva**: Diseño adaptable a diferentes tamaños de pantalla.
+
+## Estructura del Proyecto
+
+El código fuente se organiza principalmente en la carpeta `src`, donde se encuentran:
+
+-   `App.tsx`: Componente principal que orquesta la aplicación.
+-   `main.tsx`: Punto de entrada de la aplicación React.
+-   `components/`: Directorio que contiene los componentes reutilizables:
+    -   `PatientForm.tsx`: Formulario para agregar y editar pacientes.
+    -   `PatientsList.tsx`: Componente para mostrar la lista de pacientes.
+    -   `Error.tsx`: Componente para mostrar mensajes de error.
+-   `index.css`: Estilos globales y configuración de Tailwind CSS.
+
+## Configuración de ESLint
+
+Si estás desarrollando una aplicación de producción, te recomendamos actualizar la configuración para habilitar reglas de lint con reconocimiento de tipos:
+
+```javascript
 export default tseslint.config({
   extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
+    // Elimina ...tseslint.configs.recommended y reemplaza con esto
     ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
+    // Alternativamente, usa esto para reglas más estrictas
     ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
+    // Opcionalmente, añade esto para reglas estilísticas
     ...tseslint.configs.stylisticTypeChecked,
   ],
   languageOptions: {
-    // other options...
+    // otras opciones...
     parserOptions: {
       project: ['./tsconfig.node.json', './tsconfig.app.json'],
       tsconfigRootDir: import.meta.dirname,
     },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
   },
 })
 ```
