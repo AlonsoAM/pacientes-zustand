@@ -1,13 +1,15 @@
 import {useForm, type SubmitHandler} from "react-hook-form";
 import Error from "./Error.tsx";
 import type {DraftPatient} from "../types/Patient";
+import {usePatientStore} from "../store/store.ts";
 
 const PatientForm = () => {
 
   const {register, handleSubmit, formState: {errors}} = useForm<DraftPatient>()
+  const  addPatient  = usePatientStore(state => state.addPatient)
 
   const registerPatient: SubmitHandler<DraftPatient> = (data: DraftPatient) => {
-    console.log('Nuevo Paciente', data)
+    addPatient(data)
   }
 
   return (
