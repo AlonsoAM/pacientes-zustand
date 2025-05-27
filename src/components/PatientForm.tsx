@@ -5,11 +5,12 @@ import {usePatientStore} from "../store/store.ts";
 
 const PatientForm = () => {
 
-  const {register, handleSubmit, formState: {errors}} = useForm<DraftPatient>()
+  const {register, handleSubmit, formState: {errors}, reset} = useForm<DraftPatient>()
   const  addPatient  = usePatientStore(state => state.addPatient)
 
   const registerPatient: SubmitHandler<DraftPatient> = (data: DraftPatient) => {
     addPatient(data)
+    reset()
   }
 
   return (
