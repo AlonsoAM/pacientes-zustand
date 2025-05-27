@@ -49,7 +49,7 @@ export const usePatientStore = create<PatientState>()(
             })
             
             if (patientToDelete) {
-              notifySuccess(`Paciente ${patientToDelete.name} eliminado correctamente`)
+              notifyError(`Paciente ${patientToDelete.name} eliminado correctamente`)
             }
           } catch (error) {
             notifyError('Hubo un error al eliminar el paciente')
