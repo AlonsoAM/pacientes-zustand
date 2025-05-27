@@ -1,14 +1,27 @@
 import type {Patient} from "../types/Patient.ts";
 import {formatDatePeru} from "../utils/dateFormatter.ts";
 import {usePatientStore} from "../store/store.ts";
+import { notifyInfo } from "../utils/notifyUtils";
 
 type PatientDetailsProps = {
   patient: Patient
 }
 
 const PatientDetails = ({patient}: PatientDetailsProps) => {
+  // Obtenemos las funciones del store
+  const deletePatient = usePatientStore(state => state.deletePatient);
+  const setPatientToEdit = usePatientStore(state => state.setPatientToEdit);
 
-  const deletePatient = usePatientStore(state => state.deletePatient)
+  // Función para manejar el click en editar
+  const handleEdit = () => {
+    setPatientToEdit(patient);
+    notifyInfo(`Editando paciente: ${patient.name}`);
+    // Opcional: hacer scroll hacia el formulario para mejor UX
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-5 mb-4 transition-all hover:shadow-lg">
@@ -43,6 +56,7 @@ const PatientDetails = ({patient}: PatientDetailsProps) => {
         <button
           type="button"
           className="py-2 px-4 cursor-pointer uppercase bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition-colors flex items-center"
+          onClick={handleEdit}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

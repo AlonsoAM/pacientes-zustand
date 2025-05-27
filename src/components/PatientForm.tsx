@@ -1,25 +1,67 @@
+import {useEffect} from "react";
 import {useForm, type SubmitHandler} from "react-hook-form";
 import Error from "./Error.tsx";
-import type {DraftPatient} from "../types/Patient";
+import type {DraftPatient, Patient} from "../types/Patient";
 import {usePatientStore} from "../store/store.ts";
+import { notifyInfo } from "../utils/notifyUtils";
 
 const PatientForm = () => {
+  // Agregamos setValue para poder establecer valores programáticamente
+  const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<DraftPatient>()
+  
+  // Obtenemos todas las funciones necesarias del store
+  const addPatient = usePatientStore(state => state.addPatient)
+  const patientToEdit = usePatientStore(state => state.patientToEdit)
+  const updatePatient = usePatientStore(state => state.updatePatient)
+  const clearPatientToEdit = usePatientStore(state => state.clearPatientToEdit)
 
-  const {register, handleSubmit, formState: {errors}, reset} = useForm<DraftPatient>()
-  const  addPatient  = usePatientStore(state => state.addPatient)
+  // Efecto para cargar los datos del paciente cuando se va a editar
+  useEffect(() => {
+    if (patientToEdit) {
+      setValue('name', patientToEdit.name)
+      setValue('caretaker', patientToEdit.caretaker)
+      setValue('email', patientToEdit.email)
+      setValue('date', patientToEdit.date)
+      setValue('symptoms', patientToEdit.symptoms)
+    }
+  }, [patientToEdit, setValue])
 
   const registerPatient: SubmitHandler<DraftPatient> = (data: DraftPatient) => {
-    addPatient(data)
+    if (patientToEdit) {
+      // Si estamos editando, actualizamos el paciente existente
+      const updatedPatient: Patient = {
+        ...data,
+        id: patientToEdit.id
+      }
+      updatePatient(updatedPatient)
+    } else {
+      // Si estamos creando un nuevo paciente
+      addPatient(data)
+    }
+    
+    // Limpiamos el formulario en ambos casos
     reset()
+  }
+
+  
+  // Función para cancelar la edición
+  const handleCancel = () => {
+    clearPatientToEdit()
+    reset()
+    notifyInfo('Edición cancelada');
   }
 
   return (
     <div className="md:w-1/2 lg:w-2/5 mx-5">
-      <h2 className="font-black text-3xl text-center">Seguimiento Pacientes</h2>
+      <h2 className="font-black text-3xl text-center">
+        {patientToEdit ? 'Editar Paciente' : 'Seguimiento Pacientes'}
+      </h2>
 
       <p className="text-lg mt-5 text-center mb-10">
-        Añade Pacientes y {''}
-        <span className="text-indigo-600 font-bold">Administralos</span>
+        {patientToEdit 
+          ? 'Modifica la información del paciente' 
+          : 'Añade Pacientes y '}
+        {!patientToEdit && <span className="text-indigo-600 font-bold">Administralos</span>}
       </p>
 
       <form
@@ -137,11 +179,23 @@ const PatientForm = () => {
           )}
         </div>
 
-        <input
-          type="submit"
-          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-          value='Guardar Paciente'
-        />
+        <div className={`${patientToEdit ? 'flex gap-3' : ''}`}>
+          <input
+            type="submit"
+            className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+            value={patientToEdit ? 'Guardar Cambios' : 'Guardar Paciente'}
+          />
+          
+          {patientToEdit && (
+            <button
+              type="button"
+              className="bg-gray-600 w-full p-3 text-white uppercase font-bold hover:bg-gray-700 cursor-pointer transition-colors"
+              onClick={handleCancel}
+            >
+              Cancelar
+            </button>
+          )}
+        </div>
       </form>
     </div>
   )

@@ -1,8 +1,10 @@
 import PatientForm from "./components/PatientForm.tsx";
 import PatientsList from "./components/PatientsList.tsx";
 
-const App = () => {
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const App = () => {
   return (
     <>
       <div className={'container mx-auto mt-20'}>
@@ -15,6 +17,20 @@ const App = () => {
           <PatientsList/>
         </div>
       </div>
+      
+      {/* Configuración del contenedor de notificaciones */}
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }
